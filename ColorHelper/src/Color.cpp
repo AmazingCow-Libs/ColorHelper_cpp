@@ -2,7 +2,7 @@
 //               █      █                                                     //
 //               ████████                                                     //
 //             ██        ██                                                   //
-//            ███  █  █  ███        Color.h                                   //
+//            ███  █  █  ███        Color.cpp                                 //
 //            █ █        █ █        colorhelper_cpp                           //
 //             ████████████                                                   //
 //           █              █       Copyright (c) 2015, 2016                  //
@@ -38,65 +38,113 @@
 //                                  Enjoy :)                                  //
 //----------------------------------------------------------------------------//
 
-#ifndef __ColorHelper_include_Color_h__
-#define __ColorHelper_include_Color_h__
+//Header
+#include "../include/Color.h"
 
-namespace colorhelper {
-class Color
+//Usings
+using namespace colorhelper;
+
+// Static initializers //
+Color Color::fromHex(const std::string &hex)
 {
-    // Enums / Constants / Typdefs //
-private:
-    enum class ColorType
-    {
-        RGB, HSV, HSL, CMY, CMYK
-    };
 
-    // InnerTypes //
-public
-    struct RGB  { int   r;   int g;   int b; };
-    struct HSV  { float h; float s; float v; };
-    struct HSL  { float h; float s; float l; };
-    struct CMY  { float c; float m; float y; };
-    struct CMYK { float c; float m; float y; float k; };
+}
 
-private:
-    union ColorRepresentation
-    {
-        RGB  rgb;
-        HSV  hsv;
-        HSL  hsl;
-        CMY  cmy;
-        CMYK cmyk;
+Color Color::fromRGB(int r, int g, int b)
+{
+    return Color(ColorRepresentation {
+        .rgb       = RGB { r, g, b };
+        .colorType = ColorType::RGB;
+    });
+}
 
-        ColorType colorType;
-    };
+Color Color::fromHSV(float h, float s, float v)
+{
+    return Color(ColorRepresentation {
+        .HSV       = HSV { h, s, v };
+        .colorType = ColorType::HSV;
+    });
+}
 
-    // Static initializers //
-public:
-    static Color fromHex (const std::string &hex);
-    static Color fromRGB (int   r,   int g,   int b);
-    static Color fromHSV (float h, float s, float v);
-    static Color fromHSL (float h, float s, float l);
-    static Color fromCMY (float c, float m, float y);
-    static Color fromCMYK(float c, float m, float y, float k);
+Color Color::fromHSL(float h, float s, float l)
+{
+    return Color(ColorRepresentation {
+        .HSL       = HSL { h, s, l };
+        .colorType = ColorType::HSL;
+    });
+}
 
-    // Hex //
-public:
-    void setHex(const std::string &hex);
-    std::string getHex() const;
+Color Color::fromCMY(float c, float m, float y)
+{
+    return Color(ColorRepresentation {
+        .CMY       = CMY { c, m, y };
+        .colorType = ColorType::CMY;
+    });
+}
 
-    // RGB //
-public:
-    //Setters.
-    void setRGB       (int r, int g, int b);
-    void setRGB_Red   (int r);
-    void setRGB_Green (int g);
-    void setRGB_Blue  (int b);
-    //Getters.
-    RGB getRGB       () const;
-    int getRGB_Red   () const;
-    int getRGB_Green () const;
-    int getRGB_Blue  () const;
+Color Color::fromCMYK(float c, float m, float y, float k)
+{
+    return Color(ColorRepresentation {
+        .CMYK      = CMYK { c, m, y, k };
+        .colorType = ColorType::CMYK;
+    });
+}
+
+
+// Hex //
+void Color::setHex(const std::string &hex)
+{
+
+}
+
+std::string getHex() const
+{
+
+}
+
+
+// RGB //
+//Setters.
+void Color::setRGB(int r, int g, int b)
+{
+    m_currentRepresentation.rgb       = RGB { r, g, b };
+    m_currentRepresentation.colorType = ColorType::RGB;
+}
+
+void Color::setRGB_Red(int r)
+{
+
+}
+
+void Color::setRGB_Green(int g)
+{
+
+}
+
+void Color::setRGB_Blue(int b)
+{
+
+}
+
+//Getters.
+RGB Color::getRGB() const
+{
+}
+
+int Color::getRGB_Red() const
+{
+
+}
+
+int Color::getRGB_Green() const
+{
+
+}
+int Color::getRGB_Blue() const
+{
+
+}
+
 
     // HSV //
 public:
@@ -154,7 +202,7 @@ public:
 
     // CTOR/DTOR //
 private:
-    Color(ColorRepresentation representation);
+    Color();
 public:
     ~Color();
 
