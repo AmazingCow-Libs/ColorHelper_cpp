@@ -41,128 +41,79 @@
 #ifndef __ColorHelper_include_Color_h__
 #define __ColorHelper_include_Color_h__
 
-namespace colorhelper {
+//std
+#include <string>
+#include <ostream>
+
+
 class Color
 {
-    // Enums / Constants / Typdefs //
-private:
-    enum class ColorType
-    {
-        RGB, HSV, HSL, CMY, CMYK
-    };
-
     // InnerTypes //
-public
-    struct RGB  { int   r;   int g;   int b; };
-    struct HSV  { float h; float s; float v; };
-    struct HSL  { float h; float s; float l; };
-    struct CMY  { float c; float m; float y; };
+public:
+    struct RGB  { int   r;   int g;   int b;          };
+    struct HSV  { float h; float s; float v;          };
+    struct HSL  { float h; float s; float l;          };
+    struct CMY  { float c; float m; float y;          };
     struct CMYK { float c; float m; float y; float k; };
 
+
+    // Static Initializers //
+public:
+    static Color fromHex(const std::string &hex);
+    static Color fromRGB(const RGB &value);
+    static Color fromHSV(const HSV &value);
+    static Color fromHSL(const HSL &value);
+    static Color fromCMY(const CMY &value);
+
+
+    // Output Methods //
+public:
+    std::string toHex();
+    RGB         toRGB();
+    HSV         toHSV();
+    HSL         toHSL();
+    CMY         toCMY();
+
+
+    // Input Methods //
+public:
+    void updateFrom(const std::string &hex);
+    void updateFrom(const RGB &value);
+    void updateFrom(const HSV &value);
+    void updateFrom(const HSL &value);
+    void updateFrom(const CMY &value);
+
+
+    // Helper Functions //
+public:
+    static HSV RGB_TO_HSV(const RGB &value);
+    static HSL RGB_TO_HSL(const RGB &value);
+    static CMY RGB_TO_CMY(const RGB &value);
+
+    static RGB HSV_TO_RGB(const HSV &value);
+    static RGB HSL_TO_RGB(const HSL &value);
+    static RGB CMY_TO_RGB(const CMY &value);
+
+
+    // Private Functions //
 private:
-    union ColorRepresentation
-    {
-        RGB  rgb;
-        HSV  hsv;
-        HSL  hsl;
-        CMY  cmy;
-        CMYK cmyk;
-
-        ColorType colorType;
-    };
-
-    // Static initializers //
-public:
-    static Color fromHex (const std::string &hex);
-    static Color fromRGB (int   r,   int g,   int b);
-    static Color fromHSV (float h, float s, float v);
-    static Color fromHSL (float h, float s, float l);
-    static Color fromCMY (float c, float m, float y);
-    static Color fromCMYK(float c, float m, float y, float k);
-
-    // Hex //
-public:
-    void setHex(const std::string &hex);
-    std::string getHex() const;
-
-    // RGB //
-public:
-    //Setters.
-    void setRGB       (int r, int g, int b);
-    void setRGB_Red   (int r);
-    void setRGB_Green (int g);
-    void setRGB_Blue  (int b);
-    //Getters.
-    RGB getRGB       () const;
-    int getRGB_Red   () const;
-    int getRGB_Green () const;
-    int getRGB_Blue  () const;
-
-    // HSV //
-public:
-    //Setters.
-    void setHSV           (float h, float s, float v);
-    void setHSV_Hue       (float h);
-    void setHSV_Saturation(float s);
-    void setHSV_Value     (float v);
-    //Getters.
-    HSV   getHSV           () const;
-    float getHSV_Hue       () const;
-    float getHSV_Saturation() const;
-    float getHSV_Value     () const;
-
-    // HSL //
-public:
-    //Setters.
-    void setHSL           (float h, float s, float l);
-    void setHSL_Hue       (float h);
-    void setHSL_Saturation(float s);
-    void setHSL_Lumiance  (float l);
-    //Getters.
-    HSL   getHSL           () const;
-    float getHSV_Hue       () const;
-    float getHSV_Saturation() const;
-    float getHSV_Lumiance  () const;
-
-    // CMY //
-public:
-    //Setters.
-    void setCMY         (float c, float m, float y);
-    void setCMY_Cyan    (float c);
-    void setCMY_Magenta (float m);
-    void setCMY_Yellow  (float y);
-    //Getters.
-    CMY   getCMY         () const;
-    float getCMY_Cyan    () const;
-    float getCMY_Magenta () const;
-    float getCMY_Yellow  () const;
-
-    // CMYK //
-public:
-    //Setters.
-    void setCMYK         (float c, float m, float y, float k);
-    void setCMYK_Cyan    (float c);
-    void setCMYK_Magenta (float m);
-    void setCMYK_Yellow  (float y);
-    void setCMYK_Key     (float k);
-    //Getters.
-    CMYK  getCMYK         () const;
-    float getCMYK_Cyan    () const;
-    float getCMYK_Magenta () const;
-    float getCMYK_Yellow  () const;
-    float getCMYK_Key     () const;
-
-    // CTOR/DTOR //
-private:
-    Color(ColorRepresentation representation);
-public:
-    ~Color();
+    static float HSL_HUE_TO_RGB_HELPER(float v1, float v2, float vh);
 
     // iVars //
 private:
-    ColorRepresentation m_currentRepresentation;
+    RGB m_rgb;
+};
 
-}; //Class Color.
-}  //Namespace colorhelper.
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Stream Operators                                                           //
+////////////////////////////////////////////////////////////////////////////////
+std::ostream& operator<<(std::ostream &os, const Color::RGB &value);
+std::ostream& operator<<(std::ostream &os, const Color::HSV &value);
+std::ostream& operator<<(std::ostream &os, const Color::HSL &value);
+std::ostream& operator<<(std::ostream &os, const Color::CMY &value);
+
+
 
 #endif // defined( __ColorHelper_include_Color_h__ ) //
