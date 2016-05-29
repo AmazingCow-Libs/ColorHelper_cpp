@@ -1,0 +1,4 @@
+v0.0.1 - 
+    Finish the basic implementation, but code is very buggy.
+    The only reason to make this release is that I won't 
+    go debug this stuff now... (going to SP right now :/)
