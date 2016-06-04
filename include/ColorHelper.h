@@ -3,7 +3,7 @@
 //               ████████                                                     //
 //             ██        ██                                                   //
 //            ███  █  █  ███        Color.h                                   //
-//            █ █        █ █        colorhelper_cpp                           //
+//            █ █        █ █        Colorelper_cpp                           //
 //             ████████████                                                   //
 //           █              █       Copyright (c) 2015, 2016                  //
 //          █     █    █     █      AmazingCow - www.AmazingCow.com           //
@@ -41,79 +41,89 @@
 #ifndef __ColorHelper_include_Color_h__
 #define __ColorHelper_include_Color_h__
 
-//std
-#include <string>
+//
 #include <ostream>
+#include <string>
+#include <vector>
+
+namespace ColorHelper {
+
+////////////////////////////////////////////////////////////////////////////////
+// Types                                                                      //
+////////////////////////////////////////////////////////////////////////////////
+typedef std::string HEX;
+
+struct RGB  { int   r;   int g;   int b;          }; //Range of (0, 255)
+struct HSV  { float h; float s; float v;          }; //Range of (0,   1)
+struct HSL  { float h; float s; float l;          }; //Range of (0,   1)
+struct CMY  { float c; float m; float y;          }; //Range of (0,   1)
+struct CMYK { float c; float m; float y; float k; }; //Range of (0,   1)
 
 
-class Color
-{
-    // InnerTypes //
-public:
-    struct RGB  { int   r;   int g;   int b;          };
-    struct HSV  { float h; float s; float v;          };
-    struct HSL  { float h; float s; float l;          };
-    struct CMY  { float c; float m; float y;          };
-    struct CMYK { float c; float m; float y; float k; };
+////////////////////////////////////////////////////////////////////////////////
+// Conversions                                                                //
+////////////////////////////////////////////////////////////////////////////////
+//RGB - HEX
+HEX RGB_to_HEX(const RGB &rgb);
+RGB HEX_to_RGB(const HEX &hex);
+
+//RGB - HSV
+HSV RGB_to_HSV(const RGB &rgb);
+RGB HSV_to_RGB(const HSV &hsv);
+
+//RGB - HSL
+HSL RGB_to_HSL(const RGB &rgb);
+RGB HSL_to_RGB(const HSL &hsl);
+
+//RGB - CMY
+CMY RGB_to_CMY(const RGB &rgb);
+RGB CMY_to_RGB(const CMY &cmy);
+
+//RGB - CMYK
+CMYK RGB_to_CMYK(const RGB &rgb);
+RGB CMYK_to_RGB(const CMYK &cmyk);
+
+//RGB - Name
+std::string RGB_to_Name(const RGB &rgb, bool *found = nullptr);
+RGB Name_To_RGB(const std::string &name, bool *found = nullptr);
 
 
-    // Static Initializers //
-public:
-    static Color fromHex(const std::string &hex);
-    static Color fromRGB(const RGB &value);
-    static Color fromHSV(const HSV &value);
-    static Color fromHSL(const HSL &value);
-    static Color fromCMY(const CMY &value);
+////////////////////////////////////////////////////////////////////////////////
+// Color Wheel Functions                                                      //
+////////////////////////////////////////////////////////////////////////////////
+//Complementary
+std::vector<HSL> Complementary(const HSL &hsl);
+std::vector<HSV> Complementary(const HSV &hsv);
 
+//Split Complementary
+std::vector<HSL> SplitComplementary(const HSL &hsl);
+std::vector<HSV> SplitComplementary(const HSV &hsv);
 
-    // Output Methods //
-public:
-    std::string toHex();
-    RGB         toRGB();
-    HSV         toHSV();
-    HSL         toHSL();
-    CMY         toCMY();
+//Analogous
+std::vector<HSL> Analogous(const HSL &hsl);
+std::vector<HSV> Analogous(const HSV &hsv);
 
+//Triad
+std::vector<HSL> Triad(const HSL &hsl, float angleInDegrees = 120);
+std::vector<HSV> Triad(const HSV &hsv, float angleInDegrees = 120);
 
-    // Input Methods //
-public:
-    void updateFrom(const std::string &hex);
-    void updateFrom(const RGB &value);
-    void updateFrom(const HSV &value);
-    void updateFrom(const HSL &value);
-    void updateFrom(const CMY &value);
+//Tetrad
+std::vector<HSL> Tetrad(const HSL &hsl, float angleInDegrees = 90);
+std::vector<HSV> Tetrad(const HSV &hsv, float angleInDegrees = 90);
 
-
-    // Helper Functions //
-public:
-    static HSV RGB_TO_HSV(const RGB &value);
-    static HSL RGB_TO_HSL(const RGB &value);
-    static CMY RGB_TO_CMY(const RGB &value);
-
-    static RGB HSV_TO_RGB(const HSV &value);
-    static RGB HSL_TO_RGB(const HSL &value);
-    static RGB CMY_TO_RGB(const CMY &value);
-
-
-    // Private Functions //
-private:
-    static float HSL_HUE_TO_RGB_HELPER(float v1, float v2, float vh);
-
-    // iVars //
-private:
-    RGB m_rgb;
-};
-
+//Tetrad Square
+std::vector<HSL> TetradSquare(const HSL &hsl, float angleInDegrees = 90);
+std::vector<HSV> TetradSquare(const HSV &hsv, float angleInDegrees = 90);
 
 
 ////////////////////////////////////////////////////////////////////////////////
 // Stream Operators                                                           //
 ////////////////////////////////////////////////////////////////////////////////
-std::ostream& operator<<(std::ostream &os, const Color::RGB &value);
-std::ostream& operator<<(std::ostream &os, const Color::HSV &value);
-std::ostream& operator<<(std::ostream &os, const Color::HSL &value);
-std::ostream& operator<<(std::ostream &os, const Color::CMY &value);
+std::ostream& operator<<(std::ostream &os, const RGB &rgb);
+std::ostream& operator<<(std::ostream &os, const HSV &hsv);
+std::ostream& operator<<(std::ostream &os, const HSL &hsl);
+std::ostream& operator<<(std::ostream &os, const CMY &cmy);
 
 
-
+}//namespace ColorHelper {
 #endif // defined( __ColorHelper_include_Color_h__ ) //
