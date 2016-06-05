@@ -80,8 +80,8 @@ CMY RGB_to_CMY(const RGB &rgb);
 RGB CMY_to_RGB(const CMY &cmy);
 
 //RGB - CMYK
-CMYK RGB_to_CMYK(const RGB &rgb);
-RGB CMYK_to_RGB(const CMYK &cmyk);
+CMYK RGB_to_CMYK(const RGB &rgb);  //COWTODO: Implement this function
+RGB CMYK_to_RGB(const CMYK &cmyk); //COWTODO: Implement this function
 
 //RGB - Name
 std::string RGB_to_Name(const RGB &rgb, bool *found = nullptr);

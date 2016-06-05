@@ -67,6 +67,20 @@ using namespace ColorHelper;
     (((max_value - (_nr_)) / 6.0f) + (delta_value / 2.0f)) / delta_value;
 
 
+#define _ANGLE_TO_HUE(_angle_) \
+    static_cast<float>(fabs(fmodf(_angle_, 360.0f) / 360.0f))
+
+#define _HSL_PLUS_ANGLE(_hsl_, _angle_)     \
+    HSL { _hsl_.h + _ANGLE_TO_HUE(_angle_), \
+          _hsl_.s,                          \
+          _hsl_.l }
+
+#define _HSV_PLUS_ANGLE(_hsv_, _angle_)           \
+          HSV { _hsv_.h + _ANGLE_TO_HUE(_angle_), \
+                _hsv_.s,                          \
+                _hsv_.v }
+
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Constants                                                                  //
@@ -552,6 +566,128 @@ RGB ColorHelper::Name_To_RGB(const std::string &name, bool *found)
     }
 
     return rgb;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Color Wheel Functions                                                      //
+////////////////////////////////////////////////////////////////////////////////
+
+//Complementary
+std::vector<HSL> ColorHelper::Complementary(const HSL &hsl)
+{
+    return std::vector<HSL> {
+        hsl,
+        _HSL_PLUS_ANGLE(hsl, 180)
+    };
+}
+
+std::vector<HSV> ColorHelper::Complementary(const HSV &hsv)
+{
+    return std::vector<HSV> {
+        hsv,
+        _HSV_PLUS_ANGLE(hsv, 180)
+    };
+}
+
+//Split Complementary
+std::vector<HSL> ColorHelper::SplitComplementary(const HSL &hsl)
+{
+    return std::vector<HSL> {
+        hsl,
+        _HSL_PLUS_ANGLE(hsl, +150),
+        _HSL_PLUS_ANGLE(hsl, -150)
+    };
+}
+std::vector<HSV> ColorHelper::SplitComplementary(const HSV &hsv)
+{
+    return std::vector<HSV> {
+        hsv,
+        _HSV_PLUS_ANGLE(hsv, +150),
+        _HSV_PLUS_ANGLE(hsv, -150)
+    };
+}
+
+//Analogous
+std::vector<HSL> ColorHelper::Analogous(const HSL &hsl)
+{
+    return std::vector<HSL> {
+        hsl,
+        _HSL_PLUS_ANGLE(hsl, +30),
+        _HSL_PLUS_ANGLE(hsl, -30)
+    };
+}
+
+std::vector<HSV> ColorHelper::Analogous(const HSV &hsv)
+{
+    return std::vector<HSV> {
+        hsv,
+        _HSV_PLUS_ANGLE(hsv, +30),
+        _HSV_PLUS_ANGLE(hsv, -30)
+    };
+}
+
+
+//Triad
+std::vector<HSL> Triad(const HSL &hsl, float angleInDegrees /* = 120 */)
+{
+    return std::vector<HSL> {
+        hsl,
+        _HSL_PLUS_ANGLE(hsl,     angleInDegrees),
+        _HSL_PLUS_ANGLE(hsl, 2 * angleInDegrees)
+    };
+}
+
+std::vector<HSV> Triad(const HSV &hsv, float angleInDegrees /* = 120 */)
+{
+    return std::vector<HSV> {
+        hsv,
+        _HSV_PLUS_ANGLE(hsv,     angleInDegrees),
+        _HSV_PLUS_ANGLE(hsv, 2 * angleInDegrees)
+    };
+}
+
+
+//Tetrad
+std::vector<HSL> Tetrad(const HSL &hsl, float angleInDegrees /* = 90 */)
+{
+    return std::vector<HSL> {
+        hsl,
+        _HSL_PLUS_ANGLE(hsl,     angleInDegrees),
+        _HSL_PLUS_ANGLE(hsl, 2 * angleInDegrees),
+        _HSL_PLUS_ANGLE(hsl, 3 * angleInDegrees)
+    };
+}
+
+std::vector<HSV> Tetrad(const HSV &hsv, float angleInDegrees /* = 90 */)
+{
+    return std::vector<HSV> {
+        hsv,
+        _HSV_PLUS_ANGLE(hsv,     angleInDegrees),
+        _HSV_PLUS_ANGLE(hsv, 2 * angleInDegrees),
+        _HSV_PLUS_ANGLE(hsv, 3 * angleInDegrees)
+    };
+}
+
+
+//Tetrad Square
+std::vector<HSL> TetradSquare(const HSL &hsl, float angleInDegrees = 90)
+{
+    return std::vector<HSL> {
+        hsl,
+        _HSL_PLUS_ANGLE(hsl,     angleInDegrees),
+        _HSL_PLUS_ANGLE(hsl, 2 * angleInDegrees),
+        _HSL_PLUS_ANGLE(hsl, 3 * angleInDegrees)
+    };
+}
+std::vector<HSV> TetradSquare(const HSV &hsv, float angleInDegrees = 90)
+{
+    return std::vector<HSV> {
+        hsv,
+        _HSV_PLUS_ANGLE(hsv,     angleInDegrees),
+        _HSV_PLUS_ANGLE(hsv, 2 * angleInDegrees),
+        _HSV_PLUS_ANGLE(hsv, 3 * angleInDegrees)
+    };
 }
 
 
