@@ -59,6 +59,16 @@ struct HSL  { float h; float s; float l;          }; //Range of (0,   1)
 struct CMY  { float c; float m; float y;          }; //Range of (0,   1)
 struct CMYK { float c; float m; float y; float k; }; //Range of (0,   1)
 
+struct Color
+{
+    union {
+        RGB  rgb;
+        HSV  hsv;
+        HSL  hsl;
+        CMY  cmy;
+        CMYK cmyk;
+    };
+};
 
 ////////////////////////////////////////////////////////////////////////////////
 // Conversions                                                                //
